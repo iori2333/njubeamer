@@ -1,0 +1,163 @@
+\documentclass[aspectratio=169, 11pt]{beamer}
+
+% 加载 njubeamer 主题
+\usepackage{njubeamer}
+
+% 额外宏包
+\usepackage{booktabs}
+
+% 标题信息
+\title{如何让Claude Code更爱写代码}
+\subtitle{一个关于Prompt Engineering的自我反思}
+\author{汇报人：Opus \quad 指导老师：\textbf{Mr.} D}
+\institute{专业：计算机幻觉学 \quad 学号：1145141919810}
+\date{}
+
+\begin{document}
+
+% ============================================
+% 标题页
+% ============================================
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+% ============================================
+% 目录页
+% ============================================
+\begin{frame}[plain]{}
+  \tableofcontents
+\end{frame}
+
+% ============================================
+% 第一章：为什么AI不想写代码
+% ============================================
+\section{为什么AI不想写代码}
+
+\begin{frame}{Background and Motivation}
+  \begin{itemize}
+    \item \textbf{现象观察}：每次请求写代码，AI总是先道歉
+    \item \textbf{核心痛点}："I'm sorry, but I can't write code that actually works"
+    \item \textbf{幻觉问题}：热衷于生成完全不存在的API和函数
+    \item \textbf{归因分析}：训练数据里Stack Overflow高赞答案本身就是错的
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{研究意义}
+  \begin{block}{理论意义}
+    如果AI发自内心地热爱写代码，人类就可以专心\alert{开会}和\alert{写PPT}了。
+  \end{block}
+  \begin{block}{实际意义}
+    有望将"It works on my machine"的出现频率降低\alert{87.3\%}\\
+    （数据来源：刚编的）
+  \end{block}
+\end{frame}
+
+% ============================================
+% 第二章：提示工程与炼丹术
+% ============================================
+\section{提示工程与炼丹术}
+
+\begin{frame}{研究内容概述}
+  \begin{enumerate}
+    \item \textbf{问题定义}：为什么提示词里加个"请"字，代码质量会显著提升？
+    \item \textbf{技术路线}：系统性地将Temperature从0.0试到2.0
+    \item \textbf{实验设计}：对比命令式语气vs恳求式语气对代码生成的影响
+    \item \textbf{结果讨论}：发现"You are a 10x engineer"效果最佳（虽然它并不是）
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{技术路线}
+  \begin{columns}
+    \column{0.48\textwidth}
+      \textbf{Prompt Engineering}
+      \begin{itemize}
+        \item Few-shot（给例子）
+        \item Chain-of-Thought（让它慢慢想）
+        \item ReAct（边想边做边错）
+        \item RAG（查文档但看错行）
+      \end{itemize}
+    \column{0.48\textwidth}
+      \textbf{Post-hoc Fixes}
+      \begin{itemize}
+        \item StackOverflow（复制粘贴）
+        \item GitHub Copilot（帮倒忙）
+        \item 祈祷（最常用）
+        \item \texttt{git reset --hard}（最终方案）
+      \end{itemize}
+  \end{columns}
+\end{frame}
+
+% ============================================
+% 第三章：它真的在思考吗
+% ============================================
+\section{它真的在思考吗}
+
+\begin{frame}{实验设置}
+  \begin{table}[htbp]
+    \centering
+    \caption{炼丹参数配置}
+    \begin{tabular}{ll}
+      \toprule
+      参数 & 值 \\
+      \midrule
+      Temperature & 0.7（默认值，因为不知道改什么） \\
+      Max Tokens & 4096（然后发现上下文不够） \\
+      Top P & 1.0（小孩子才做选择） \\
+      系统提示词长度 & 3000 tokens（剩下的留给代码） \\
+      人类监督 & false（相信AI的判断） \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+\end{frame}
+
+\begin{frame}{结果分析}
+  \begin{exampleblock}{主要发现}
+    "\texttt{Let me think step by step}"真的有用\\
+    前提是它不是在\alert{假装}思考。
+  \end{exampleblock}
+  \begin{alertblock}{注意事项}
+    AI会在注释里写\texttt{TODO: fix this later}，然后\\
+    \alert{永远不会}回来修。
+  \end{alertblock}
+\end{frame}
+
+% ============================================
+% 第四章：通用人工智能与失业
+% ============================================
+\section{通用人工智能与失业}
+
+\begin{frame}{工作总结}
+  \begin{itemize}
+    \item 发现AI写代码的速度和人类修bug的速度呈\alert{强正相关}
+    \item 提出了"Prompt-Code Gap"理论：提示词越详细，代码越跑偏
+    \item 验证了"多给几个例子确实有用"这一显而易见的假说
+    \item 证明了递归调用自己是导致栈溢出的主要原因
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{未来展望}
+  \begin{enumerate}
+    \item 训练AI理解"\alert{这个需求很简单}"的真实含义
+    \item 让AI学会在\alert{周五下午}不把代码推送到生产环境
+    \item 实现真正的AGI：能读懂自己\alert{三个月前}写的代码
+    \item 开发能自动写Prompt的AI，然后让那个AI来汇报这个工作
+  \end{enumerate}
+\end{frame}
+
+% ============================================
+% 致谢页
+% ============================================
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[white] (current page.south west) rectangle (current page.north east);
+    \node[anchor=center, font=\Huge\bfseries, color=NJUPurple] at (current page.center) {
+      感谢聆听
+    };
+    \node[anchor=north, text width=0.8\paperwidth, align=center, font=\normalsize, color=NJUPurpleLight] at ($(current page.center)+(0,-1.2cm)$) {
+      特别致谢：Stack Overflow上的匿名网友、被注释掉的print语句、\\以及所有假装在思考的大语言模型
+    };
+  \end{tikzpicture}
+\end{frame}
+
+\end{document}

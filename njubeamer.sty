@@ -1,0 +1,255 @@
+\ProvidesPackage{njubeamer}[2026/04/24 njubeamer Beamer Theme]
+
+% ============================================
+% 基础依赖
+% ============================================
+\RequirePackage{tikz}
+\usetikzlibrary{calc, shapes.geometric, backgrounds}
+\RequirePackage{graphicx}
+\RequirePackage{ctex}
+\RequirePackage{etoolbox}
+
+% ============================================
+% 颜色定义
+% ============================================
+\definecolor{NJUPurple}{RGB}{92, 0, 92}
+\definecolor{NJUPurpleDark}{RGB}{70, 0, 70}
+\definecolor{NJUPurpleLight}{RGB}{140, 60, 140}
+\definecolor{NJUText}{RGB}{51, 51, 51}
+\definecolor{NJUTextLight}{RGB}{102, 102, 102}
+\definecolor{NJUBg}{RGB}{255, 255, 255}
+\definecolor{NJUBgLight}{RGB}{250, 245, 250}
+
+\setbeamercolor{background canvas}{bg=NJUBg}
+\setbeamercolor{normal text}{fg=NJUText}
+\setbeamercolor{frametitle}{fg=NJUPurple}
+\setbeamercolor{framesubtitle}{fg=NJUPurpleLight}
+\setbeamercolor{title}{fg=NJUPurple}
+\setbeamercolor{subtitle}{fg=NJUPurple}
+\setbeamercolor{author}{fg=white}
+\setbeamercolor{institute}{fg=white}
+\setbeamercolor{date}{fg=white}
+\setbeamercolor{section title}{fg=white}
+\setbeamercolor{section name}{fg=NJUPurple}
+\setbeamercolor{section in toc}{fg=NJUText}
+\setbeamercolor{section in toc shaded}{fg=NJUTextLight}
+\setbeamercolor{subsection in toc}{fg=NJUText}
+\setbeamercolor{itemize item}{fg=NJUPurple}
+\setbeamercolor{itemize subitem}{fg=NJUPurpleLight}
+\setbeamercolor{itemize subsubitem}{fg=NJUPurple}
+\setbeamercolor{enumerate item}{fg=NJUPurple}
+\setbeamercolor{enumerate subitem}{fg=NJUPurpleLight}
+\setbeamercolor{enumerate subsubitem}{fg=NJUPurple}
+\setbeamercolor{block title}{fg=white, bg=NJUPurple}
+\setbeamercolor{block body}{fg=NJUText, bg=NJUBgLight}
+\setbeamercolor{block title alerted}{fg=white, bg=red!70!black}
+\setbeamercolor{block body alerted}{fg=NJUText, bg=red!5}
+\setbeamercolor{block title example}{fg=white, bg=NJUPurpleLight}
+\setbeamercolor{block body example}{fg=NJUText, bg=NJUBgLight}
+\setbeamercolor{navigation symbols}{fg=NJUPurpleLight}
+\setbeamercolor{footline}{fg=NJUPurple}
+\setbeamercolor{page number in head/foot}{fg=NJUPurple}
+
+% ============================================
+% 外框（页眉、页脚、frametitle）
+% ============================================
+\setbeamersize{text margin left=0.8cm, text margin right=0.8cm}
+
+\setbeamertemplate{headline}{%
+  \ifnum\thepage>1\relax
+    \begin{tikzpicture}[remember picture, overlay]
+      \node[anchor=north east, inner sep=0pt] at ($(current page.north east)+(-0.5cm,-0.4cm)$) {
+        \includegraphics[height=0.9cm]{assets/logos/nju-emblem-purple.pdf}
+        \hspace{0.1cm}
+        \raisebox{0.1cm}{\includegraphics[height=0.7cm]{assets/logos/nju-name-purple.pdf}}
+      };
+    \end{tikzpicture}
+  \fi
+}
+
+\setbeamertemplate{footline}{%
+  \ifnum\thepage>1\relax
+    \begin{tikzpicture}[remember picture, overlay]
+      \node[anchor=south east, inner sep=0pt, font=\tiny\color{NJUPurple}] at ($(current page.south east)+(-0.5cm,0.3cm)$) {
+        \insertframenumber{} / \inserttotalframenumber
+      };
+    \end{tikzpicture}
+  \fi
+}
+
+\setbeamertemplate{frametitle}{%
+  \vbox to 1.5cm{%
+    \begin{tikzpicture}[remember picture, overlay]
+      \ifx\insertframesubtitle\empty
+        \node[anchor=west, inner sep=0pt, text width=0.85\paperwidth, align=left]
+          at ($(current page.north west)+(0.8cm,-0.8cm)$) {
+            \usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}\insertframetitle
+          };
+      \else
+        \node[anchor=south west, inner sep=0pt, text width=0.85\paperwidth, align=left]
+          at ($(current page.north west)+(0.8cm,-0.72cm)$) {
+            \usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}\insertframetitle
+          };
+        \node[anchor=north west, inner sep=0pt, text width=0.85\paperwidth, align=left]
+          at ($(current page.north west)+(0.8cm,-0.88cm)$) {
+            \usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle
+          };
+      \fi
+      \draw[NJUPurple, line width=1.2pt]
+        ($(current page.north west)+(0.8cm,-1.6cm)$) -- ($(current page.north east)+(-0.5cm,-1.6cm)$);
+    \end{tikzpicture}
+    \vss
+  }%
+}
+
+% ============================================
+% 内部（标题页、目录、章节页、列表）
+% ============================================
+\setbeamertemplate{title page}{
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[NJUPurple!88] (current page.south west) rectangle (current page.north east);
+
+    \fill[white] ($(current page.north west)+(0,-2.2cm)$) rectangle (current page.north east);
+
+    \node[anchor=north west, inner sep=0pt] at ($(current page.north west)+(0.6cm,-0.35cm)$) {
+      \includegraphics[height=1.4cm]{assets/logos/nju-emblem-purple.pdf}
+      \hspace{0.15cm}
+      \raisebox{0.15cm}{\includegraphics[height=1.1cm]{assets/logos/nju-name-purple.pdf}}
+    };
+
+    \fill[white] ($(current page.north west)+(0,-2.2cm)$) rectangle ($(current page.north east)+(0,-5.4cm)$);
+
+    \node[anchor=center, text width=0.9\paperwidth, align=center, font=\Huge\bfseries, color=NJUPurple]
+      at ($(current page.north)+(0,-3.8cm)$) {\inserttitle};
+
+    \ifx\insertsubtitle\empty\else
+      \node[anchor=north, text width=0.85\paperwidth, align=center, font=\large, color=NJUPurpleLight]
+        at ($(current page.north)+(0,-4.6cm)$) {\insertsubtitle};
+    \fi
+
+    \node[anchor=north, text width=0.9\paperwidth, align=center, font=\normalsize, color=white]
+      at ($(current page.north)+(0,-6.8cm)$) {
+        \ifx\insertauthor\empty\else\insertauthor\fi
+        \ifx\insertinstitute\empty\else
+          \ifx\insertauthor\empty\else\quad\quad\fi
+          \insertinstitute
+        \fi
+      };
+
+    \ifx\insertdate\empty\else
+      \node[anchor=north, text width=0.9\paperwidth, align=center, font=\normalsize, color=white!90]
+        at ($(current page.north)+(0,-8.0cm)$) {\insertdate};
+    \fi
+
+    \node[anchor=south west, inner sep=0pt, font=\footnotesize\bfseries, color=white!85]
+      at ($(current page.south west)+(0.6cm,0.35cm)$) {誠樸雄偉\quad 勵學敦行};
+
+    \node[anchor=south east, inner sep=0pt] at ($(current page.south east)+(-0.6cm,0.35cm)$) {
+      \includegraphics[height=0.7cm]{assets/logos/nju-emblem.pdf}
+    };
+  \end{tikzpicture}
+}
+
+\setbeamertemplate{section page}{
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[white] (current page.south west) rectangle (current page.north east);
+
+    \node[opacity=0.05, anchor=center] at ($(current page.center)$) {
+      \includegraphics[width=0.55\paperwidth]{assets/logos/nju-emblem-purple.pdf}
+    };
+
+    \node[anchor=north east, inner sep=0pt] at ($(current page.north east)+(-0.5cm,-0.4cm)$) {
+      \includegraphics[height=0.9cm]{assets/logos/nju-emblem-purple.pdf}
+      \hspace{0.1cm}
+      \raisebox{0.1cm}{\includegraphics[height=0.7cm]{assets/logos/nju-name-purple.pdf}}
+    };
+
+    \fill[NJUPurple] ($(current page.west)+(0,1.0cm)$) rectangle ($(current page.east)+(0,-1.0cm)$);
+
+    \node[anchor=center, text width=0.85\paperwidth, align=center, font=\LARGE\bfseries, color=white]
+      at ($(current page.center)$) {\insertsectionhead};
+
+    \node[anchor=south west, inner sep=0pt, font=\small\bfseries, color=NJUPurple]
+      at ($(current page.south west)+(0.6cm,0.4cm)$) {誠樸雄偉\quad 勵學敦行};
+  \end{tikzpicture}
+}
+
+\pretocmd{\tableofcontents}{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[white] (current page.south west) rectangle (current page.north east);
+    \fill[NJUPurple] (current page.north west) rectangle ($(current page.south west)+(3.5cm,0)$);
+    \node[anchor=center, align=center, font=\LARGE\bfseries, color=white]
+      at ($(current page.west)+(1.75cm,0)$) {目录\\[5pt]{\normalsize CONTENTS}};
+    \node[anchor=north east, inner sep=0pt] at ($(current page.north east)+(-0.5cm,-0.4cm)$) {
+      \includegraphics[height=0.9cm]{assets/logos/nju-emblem-purple.pdf}
+      \hspace{0.1cm}
+      \raisebox{0.1cm}{\includegraphics[height=0.7cm]{assets/logos/nju-name-purple.pdf}}
+    };
+  \end{tikzpicture}
+}{}{}
+
+\setbeamertemplate{section in toc}{%
+  \leavevmode\leftskip=3.8cm
+  \begin{tikzpicture}[baseline=(num.base)]
+    \node[circle, fill=NJUPurple, text=white, font=\bfseries\small, minimum size=0.55cm, inner sep=0pt] (num) {\inserttocsectionnumber};
+  \end{tikzpicture}%
+  \hspace{0.4cm}%
+  {\usebeamerfont{section in toc}\usebeamercolor[fg]{section in toc}\inserttocsection\par}%
+}
+
+\setbeamertemplate{subsection in toc}{%
+  \leavevmode\leftskip=4.8cm
+  {\usebeamerfont{subsection in toc}\usebeamercolor[fg]{subsection in toc}\inserttocsubsection\par}%
+}
+
+\setbeamertemplate{itemize item}{%
+  \tikz\draw[NJUPurple, fill=NJUPurple] (0,0) circle (0.06cm);
+}
+\setbeamertemplate{itemize subitem}{%
+  \tikz\draw[NJUPurpleLight, fill=NJUPurpleLight] (0,0) circle (0.05cm);
+}
+\setbeamertemplate{itemize subsubitem}{%
+  \tikz\draw[NJUPurple] (0,0) -- (0.12cm,0);
+}
+
+\setbeamertemplate{enumerate item}{%
+  \begin{tikzpicture}[baseline=(num.base)]
+    \node[circle, fill=NJUPurple, text=white, font=\tiny\bfseries, minimum size=0.4cm, inner sep=0pt] (num) {\insertenumlabel};
+  \end{tikzpicture}%
+}
+\setbeamertemplate{enumerate subitem}{%
+  \begin{tikzpicture}[baseline=(num.base)]
+    \node[circle, fill=NJUPurpleLight, text=white, font=\tiny\bfseries, minimum size=0.35cm, inner sep=0pt] (num) {\insertsubenumlabel};
+  \end{tikzpicture}%
+}
+
+\setbeamertemplate{blocks}[rounded][shadow=false]
+
+% ============================================
+% 全局字体设置
+% ============================================
+\setbeamerfont{title}{size=\LARGE, series=\bfseries}
+\setbeamerfont{subtitle}{size=\large}
+\setbeamerfont{author}{size=\normalsize}
+\setbeamerfont{institute}{size=\normalsize}
+\setbeamerfont{date}{size=\normalsize}
+\setbeamerfont{section in toc}{size=\large}
+\setbeamerfont{subsection in toc}{size=\normalsize}
+
+\newcommand{\nju@frametitlesize}{\fontsize{16pt}{20pt}\selectfont}
+\setbeamerfont{frametitle}{size=\nju@frametitlesize, series=\bfseries}
+\setbeamerfont{framesubtitle}{size=\small}
+
+% 表格字体缩小
+\AtBeginEnvironment{tabular}{\small}
+\setbeamerfont{caption}{size=\footnotesize}
+
+% 去除导航符号
+\setbeamertemplate{navigation symbols}{}
+
+% 章节页自动插入
+\AtBeginSection[]{
+  \begin{frame}[plain]
+    \sectionpage
+  \end{frame}
+}
